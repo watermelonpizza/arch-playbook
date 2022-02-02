@@ -5,6 +5,9 @@
     dest: "{{ dotfiles_repo_git_directory }}"
     bare: true
 
+# clones the repo into a bare directory and mirrors the contents to
+# the work_tree (which would be the users home directory)
+# see: https://news.ycombinator.com/item?id=11071754 for the idea.
 - name: checkout dotfiles
   command: >
     git
@@ -15,6 +18,7 @@
   changed_when: >
     "Already on '" + dotfiles_repo_git_branch + "'" not in dotfiles_checkout.stderr
 
+# make sure any submodules are initialised and pulled down
 - name: init submodules
   command: >
     git
