@@ -1,0 +1,6 @@
+---
+- name: setup arch linux manjaro i3 laptop
+  hosts: all
+
+  roles:
+    - dotfiles

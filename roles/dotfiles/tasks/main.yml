@@ -1,0 +1,25 @@
+---
+- name: pull dotfiles
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo_git_url }}"
+    dest: "{{ dotfiles_repo_git_directory }}"
+    bare: true
+
+- name: checkout dotfiles
+  command: >
+    git
+      --git-dir={{ dotfiles_repo_git_directory }}
+      --work-tree={{ dotfiles_repo_work_tree }}
+      checkout {{ dotfiles_repo_git_branch }}
+  register: dotfiles_checkout
+  changed_when: >
+    "Already on '" + dotfiles_repo_git_branch + "'" not in dotfiles_checkout.stderr
+
+- name: init submodules
+  command: >
+    git
+      --git-dir={{ dotfiles_repo_git_directory }}
+      --work-tree={{ dotfiles_repo_work_tree }}
+      submodule update --init --recursive
+  register: dotfiles_submodules
+  changed_when: dotfiles_submodules.stdout != ''

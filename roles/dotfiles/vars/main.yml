@@ -1,0 +1,6 @@
+---
+dotfiles_repo_git_url: https://github.com/watermelonpizza/dotfiles.git
+dotfiles_repo_git_branch: main
+
+dotfiles_repo_git_directory: $HOME/._dotfiles
+dotfiles_repo_work_tree: $HOME
