@@ -1,0 +1,6 @@
+---
+- name: Install `keepassxc`
+  become: true
+  community.general.pacman:
+    name: keepassxc
+    state: present

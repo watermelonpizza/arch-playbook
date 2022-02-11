@@ -27,3 +27,9 @@
       submodule update --init --recursive
   register: dotfiles_submodules
   changed_when: dotfiles_submodules.stdout != ''
+
+- name: Set .gnupg folder permissions
+  ansible.builtin.file:
+    path: $HOME/.gnupg/
+    state: directory
+    mode: u=rwx,g=,o=

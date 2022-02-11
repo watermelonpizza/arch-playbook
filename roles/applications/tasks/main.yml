@@ -1,0 +1,39 @@
+---
+- name: Create the `aur_builder` user
+  become: true
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: true
+    group: wheel
+
+- name: Allow the `aur_builder` user to run `sudo pacman` without a password
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: true
+    validate: 'visudo -cf %s'
+
+- name: Update pacman cache and upgrade any old packages
+  become: true
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+
+- name: Ensure Applications folder exists
+  ansible.builtin.file:
+    path: $HOME/Applications/
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+
+- import_tasks: "{{ role_path }}/tasks/powershell.yml"
+- import_tasks: "{{ role_path }}/tasks/oh-my-posh.yml"
+- import_tasks: "{{ role_path }}/tasks/alacritty.yml"
+- import_tasks: "{{ role_path }}/tasks/keepassxc.yml"
+- import_tasks: "{{ role_path }}/tasks/1password.yml"
+- import_tasks: "{{ role_path }}/tasks/mullvad.yml"
+- import_tasks: "{{ role_path }}/tasks/obsidian.yml"
+- import_tasks: "{{ role_path }}/tasks/plexamp.yml"
+- import_tasks: "{{ role_path }}/tasks/flameshot.yml"
+- import_tasks: "{{ role_path }}/tasks/fonts.yml"
+- import_tasks: "{{ role_path }}/tasks/i3.yml"

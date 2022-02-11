@@ -1,0 +1,24 @@
+---
+- name: Install `oft-cascadia-code`
+  become: true
+  community.general.pacman:
+    name: otf-cascadia-code
+    state: present
+
+- name: Install `unzip` package
+  become: true
+  community.general.pacman:
+    name: unzip
+    state: present
+
+- name: Ensure fonts folder exists
+  ansible.builtin.file:
+    path: $HOME/.local/share/fonts/
+    state: directory
+    mode: u=rwx
+
+- name: Download `CaskadiaCove` font
+  unarchive:
+    remote_src: true
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ caskaydiacove_version }}/CascadiaCode.zip
+    dest: $HOME/.local/share/fonts/

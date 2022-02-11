@@ -1,0 +1,5 @@
+- name: Install `xscreensaver`
+  become: true
+  community.general.pacman:
+    name: xscreensaver
+    state: present

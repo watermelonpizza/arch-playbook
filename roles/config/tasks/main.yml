@@ -1,0 +1,9 @@
+---
+- name: Enable natural scrolling and turn off disable trackpad while typing
+  become: true
+  blockinfile:
+    path: /etc/X11/xorg.conf.d/30-touchpad.conf
+    insertafter: '    Option "Tapping" "on"'
+    block: |2
+          Option "NaturalScrolling" "{{ enable_natural_scrolling | string }}"
+          Option "DisableWhileTyping" "{{ disable_while_typing | string }}"

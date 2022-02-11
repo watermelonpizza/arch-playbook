@@ -1,0 +1,6 @@
+---
+- name: Install `plexamp` AppImage file
+  get_url:
+    url: https://plexamp.plex.tv/plexamp.plex.tv/desktop/Plexamp-{{ plexamp_version }}.AppImage
+    dest: $HOME/Applications/Plexamp-{{ plexamp_version }}.AppImage
+    mode: u=rwx,g=rx,o=rx

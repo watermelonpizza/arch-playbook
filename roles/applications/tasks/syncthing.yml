@@ -1,0 +1,12 @@
+---
+- name: Install `syncthing`
+  become: true
+  community.general.pacman:
+    name: syncthing
+    state: present
+
+- name: Ensure `syncthing@{{ ansible_user }}` service is running and /etc/sudoers.d/11-install-aur_builder
+  service:
+    name: "syncthing@{{ ansible_user }}"
+    state: started
+    enabled: true

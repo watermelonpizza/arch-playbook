@@ -4,3 +4,10 @@
 
   roles:
     - dotfiles
+    - applications
+    - config
+
+  # TODO:
+  # - Import personal gpg key
+  #   - gpg --auto-key-locate keyserver --locate-keys {{ gpg_email }}
+  # - Add syncthing remote

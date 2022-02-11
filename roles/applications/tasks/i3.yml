@@ -1,0 +1,18 @@
+---
+- name: Install `i3` and its dependencies
+  become: true
+  community.general.pacman:
+    name:
+      - i3-gaps
+      - i3status
+      - rofi
+      - picom
+      - light
+    state: present
+
+- name: Add group `{{ light_controlling_group }}` to user {{ ansible_user }}
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ light_controlling_group }}"
+    append: yes

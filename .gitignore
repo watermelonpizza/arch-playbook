@@ -1,0 +1,6 @@
+/inventory/*
+!/inventory/.gitkeep
+!/inventory/host_vars
+/inventory/host_vars/*
+!/inventory/host_vars/.gitkeep
+

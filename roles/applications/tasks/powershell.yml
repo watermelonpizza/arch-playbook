@@ -1,0 +1,23 @@
+---
+- name: Install `powershell-bin` AUR package
+  become: true
+  become_user: aur_builder
+  kewlfft.aur.aur:
+    name: powershell-bin
+    state: present
+
+- name: Ensure powershell profile uses gpg-agent for ssh
+  blockinfile:
+    path: $HOME/.config/powershell/profile.d/gpg.ps1
+    create: true
+    block: |
+      $env:GPG_TTY="$(tty)"
+      $env:SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      gpgconf --launch gpg-agent
+      gpg-connect-agent updatestartuptty /bye > /dev/null
+
+- name: Ensure PSReadLine is at the lastest version
+  command: pwsh -NoLogo -NoProfile -Command Install-Module -Name PSReadLine -AllowClobber -AllowPrerelease -Force
+  register: psreadline
+  changed_when: >
+    psreadline.stdout != ""
