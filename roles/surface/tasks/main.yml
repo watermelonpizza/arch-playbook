@@ -1,0 +1,58 @@
+- name: Import linux-surface signing key
+  community.general.pacman_key:
+    data: "{{ lookup('file', role_path + '/files/linux-surface.asc') }}"
+    state: present
+  when: enable_surface_kernel
+
+- name: Import `libwacom-surface` signing key
+  command: gpg --keyserver hkps://keyserver.ubuntu.com --recv-key E23B7E70B467F0BF
+  register: import_libwacom_surface_key
+  changed_when: >
+    "gpg:               imported: 1" in import_libwacom_surface_key.stderr_lines
+  when: enable_surface_kernel
+
+- name: Add linux-surface repository
+  become: true
+  blockinfile:
+    path: /etc/pacman.conf
+    block: |
+      [linux-surface]
+      Server = https://pkg.surfacelinux.com/arch/
+  when: enable_surface_kernel
+
+- name: Update pacman cache to include linux-surface repository
+  become: true
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+  when: enable_surface_kernel
+
+- name: Install linux-surface software
+  become: true
+  community.general.pacman:
+    name:
+      - linux-surface
+      - linux-surface-headers
+      - iptsd
+      - linux-firmware-marvell
+    state: present
+  when: enable_surface_kernel
+
+- name: Ensure `iptsd` is enabled
+  service:
+    name: iptsd
+    enabled: true
+  when: enable_surface_kernel
+
+- name: Install the `libwacom-surface`` AUR package
+  become: true
+  become_user: aur_builder
+  kewlfft.aur.aur:
+    name: libwacom-surface
+    state: present
+  when: enable_surface_kernel
+
+- name: Update GRUB
+  become: true
+  command: grub-mkconfig -o /boot/grub/grub.cfg
+  when: enable_surface_kernel
