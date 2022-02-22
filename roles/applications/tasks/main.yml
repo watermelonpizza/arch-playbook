@@ -37,3 +37,4 @@
 - import_tasks: "{{ role_path }}/tasks/flameshot.yml"
 - import_tasks: "{{ role_path }}/tasks/fonts.yml"
 - import_tasks: "{{ role_path }}/tasks/i3.yml"
+- import_tasks: "{{ role_path }}/tasks/xmonad.yml"

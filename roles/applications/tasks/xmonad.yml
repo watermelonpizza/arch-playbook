@@ -1,0 +1,20 @@
+---
+- name: Install `xmonad`
+  become: true
+  community.general.pacman:
+    name:
+      - xmonad
+      - xmobar
+      - nitrogen
+      - rofi
+      - picom
+      - light
+      - trayer
+    state: present
+
+- name: Add group `{{ light_controlling_group }}` to user {{ ansible_user }}
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ light_controlling_group }}"
+    append: yes
